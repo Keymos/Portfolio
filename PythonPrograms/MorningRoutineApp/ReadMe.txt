@@ -6,3 +6,12 @@ The aim of this app is to open a window automating as much of my daily habits as
 
 
 Just started working on it.
+
+Update 23/04/2019:
+	What I did:
+	- Managed to get the general layout of everything right.
+	- Imported random image generation from previous project.
+	What I work on implementing:
+	- Images will change periodically.
+	- The two text-fields will display and change according to the buttons.
+	- Writing in those fields will update the respective files when closing the app.

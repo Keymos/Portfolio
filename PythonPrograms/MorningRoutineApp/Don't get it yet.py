@@ -10,7 +10,6 @@ from random import randint
 
 
 
-
 def Exit():
 	sys.exit(0)
 
@@ -43,22 +42,33 @@ imgSet2_path = "C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/"
 
 
 # ----get the needed random image path:----
-ImgSet1 = open("ImgSet1.txt", "w+")
-for i in (os.listdir(ImgSet1_path)):
-    ImgSet1.write(i + '\n')
-ImgSet1.close()
 
-ImgSet1 = open("ImgSet1.txt", 'r')
+v = "Lighthouse.jpg"
+path = ImgSet1_path
+file_list = "imgSet1_list.txt"
+def random_image_path():
+	file_list = open("imageset1List.txt", "w+")
+	for i in (os.listdir(path)):
+	    file_list.write(i + '\n')
+	file_list.close()
+	
+	file_list = open("imageset1List.txt", 'r')
+	
+	file_length = (file_len("imageset1List.txt"))
+	random_image_ImgSet1 = randint(0, file_length - 1)
+	
+	i = 0
+	while i < random_image_ImgSet1:
+	    (file_list.readline())
+	    i = i + 1
+	image_ImgSet1_name = (file_list.readline())
+	# print(path + image_ImgSet1_name)
+	return path + image_ImgSet1_name
 
-file_length = (file_len("ImgSet1.txt"))
-random_image_ImgSet1 = randint(0, file_length - 1)
 
-i = 0
-while i < random_image_ImgSet1:
-    (ImgSet1.readline())
-    i = i + 1
-image_ImgSet1_name=(ImgSet1_path + ImgSet1.readline().strip('\n'))
-print(image_ImgSet1_name)
+def change_image_path():
+	v = random_image_path() 
+	return Image.open(v.strip('\n'))
 
 
 
@@ -72,7 +82,7 @@ print(image_ImgSet1_name)
 user32 = ctypes.windll.user32
 collumnwidth, rowheight =  math.trunc(user32.GetSystemMetrics(0) / 24) , math.trunc(user32.GetSystemMetrics(1) / 28)
 CollumnWidth, RowHeight = 5 * collumnwidth, 14 * rowheight
-print(CollumnWidth, RowHeight)
+#print(CollumnWidth, RowHeight)
 
 '''
 Tk Code:
@@ -105,18 +115,19 @@ for y in Range:
 # Getting the needed image sizes
 
 im1 = Image.open("C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/17267385_726769827510669_6374602035660062720_n.jpg")
+im2 = Image.open("C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/17267385_726769827510669_6374602035660062720_n.jpg")
 img1_width, img1_height = im1.size
 a = img1_width / 300
 b = img1_height / RowHeight
 
-print(a, b)
+#print(a, b)
 if a >= b:
 	c = a
 else:
 	c = b
 
 
-print(c)
+#print(c)
 
 img1_width, img1_height = round(img1_width / c) , round(img1_height / c)
 
@@ -125,26 +136,63 @@ Img1 = Label(frame, image=img1)
 Img1.grid(row=1, column=18, columnspan=6)
 
 
-im2 = Image.open(image_ImgSet1_name)
-img2_width, img2_height = im2.size
+
+
+
+
+print('----------', random_image_path())
+IMMM2 = Image.open(random_image_path().strip('\n'))
+img2_width, img2_height = IMMM2.size
+img2 = ImageTk.PhotoImage(IMMM2.resize((img2_width, img2_height)), Image.ANTIALIAS)
+Img2 = Label(frame, image=img2)
+
+#print(img2_width, img2_height)
 a = img2_width / 300
 b = img2_height / RowHeight
-
-print(a, b)
+#print(a, b)
 if a >= b:
 	c = a
 else:
 	c = b
-
-
-print(type(c))
-
+#print(type(c))
 img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
-
-img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS) # Image.[Somehing] check it, might find the silution to the resizing problem
-Img2 = Label(frame, image=img2)
+img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS)
+#print("updated")
 Img2.img2 = img2
-Img2.grid(row=2, column=18, columnspan=6) #, column=19, rowspan=12, columnspan=5)
+Img2.grid(row=2, column=18, columnspan=6)
+'''
+def change_pic():
+	Theimage2 = change_image_path()
+	# print(Theimage2)
+	Img2.configure(image=Theimage2)
+	img2_width, img2_height = Img2.size
+	print(img2_width, img2_height)
+	a = img2_width / 300
+	b = img2_height / RowHeight
+	print(a, b)
+	if a >= b:
+		c = a
+	else:
+		c = b
+	print(type(c))
+	img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
+	img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS)
+	print("updated")
+	Img2.img2 = img2
+	Img2.grid(row=2, column=18, columnspan=6)
+'''
+
+
+
+
+
+
+
+
+
+
+ # Image.[Somehing] check it, might find the silution to the resizing problem
+ #, column=19, rowspan=12, columnspan=5)
 
 
 
@@ -165,7 +213,7 @@ button6 = Button(frame, text='>', width= collumnwidth)#, command=)
 button6.grid(row=0, column=17)
 button7 = Button(frame, text='Logs', width= 2 * collumnwidth)#, command=)
 button7.grid(row=0, column=18, columnspan=2, sticky='NSEW')
-button8 = Button(frame, text='ImgDir', width= 3 * collumnwidth)#, command=)
+button8 = Button(frame, text='ImgDir', width= 3 * collumnwidth)#, command=change_pic)
 button8.grid(row=0, column=20, columnspan=3, sticky='NSEW')
 
 

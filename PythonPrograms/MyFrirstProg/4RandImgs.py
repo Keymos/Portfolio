@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 from PIL import ImageTk, Image
 import os
-import stat
 from random import randint
 
 if not(os.path.isfile('Paths.txt')):
