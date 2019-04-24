@@ -15,3 +15,8 @@ Update 23/04/2019:
 	- Images will change periodically.
 	- The two text-fields will display and change according to the buttons.
 	- Writing in those fields will update the respective files when closing the app.
+
+Update 24/04/2019
+	What I did:
+	- The textfileds are almost done with the middle one of them working as I intended it to work while the left one is just a matter of some simple twaeking.
+	

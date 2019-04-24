@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 from PIL import ImageTk, Image
 import os
 import ctypes
@@ -36,6 +37,90 @@ def file_len(fname):
         for i, l in enumerate(f):
             pass
     return i + 1
+
+
+def insert_week():
+	# Gets the text from the file and fills the Textfield1 with it
+	global Weekfile
+	Textfield1.delete('1.0', 'end')
+	Weekfile = open('C:/Users/Entertainment/Desktop/FastGoals.txt')
+	WeekContent = Weekfile.read()
+	Weekfile.close()
+	Textfield1.insert('1.0', WeekContent)
+
+
+
+'''
+Get's the file for the needed date.
+'''
+LogsListPath = 'C:/Users/Entertainment/Desktop/Portfolio/PythonPrograms/MorningRoutineApp/LogsArchiveTest/'
+LogsList = open("LogsList.txt", "w+")
+for i in (os.listdir(LogsListPath)):
+    LogsList.write(i + '\n')
+LogsList.close()
+
+
+NumberOfLogs = (file_len("LogsList.txt"))
+print(NumberOfLogs , ' -----------------')
+
+
+DateIndexes = list(range(0, NumberOfLogs))
+DateIndex = DateIndexes[NumberOfLogs - 1]
+DictionaryOfLogs = []
+LogsList = open("LogsList.txt", 'r')
+for i in DateIndexes:
+	DictionaryOfLogs.append(LogsList.readline().strip('\n').strip('~$'))
+	i = i + 1
+DictionaryOfLogs.sort()
+DictionaryOfLogs.pop(0)
+
+
+CurrentIndex = NumberOfLogs - 2
+print(CurrentIndex, ' is the current index')
+"""
+The next two functions are for the buttons '<' and '>' and serve to display the 
+needed file content in textfield1
+"""
+def ForwardCurrentIndex():
+	global CurrentIndex
+	if CurrentIndex < (NumberOfLogs - 2):
+		CurrentIndex = CurrentIndex + 1
+		Textfield2.delete('1.0', 'end')
+		CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex])
+		CurrentLogContent = CurrentLogFile.read()
+		CurrentLogFile.close()
+		Textfield2.insert('1.0', CurrentLogContent)
+		print(CurrentIndex, 'is the CurrentIndex')
+
+
+def BackwardCurrentIndex():
+	global CurrentIndex
+	if CurrentIndex > 0:
+		CurrentIndex = CurrentIndex - 1
+		print(CurrentIndex, ' is the CurrentIndex index')
+		Textfield2.delete('1.0', 'end')
+		CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex])
+		CurrentLogContent = CurrentLogFile.read()
+		CurrentLogFile.close()
+		Textfield2.insert('1.0', CurrentLogContent)
+
+
+def SaveChanges():
+	SavingFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'w')
+	SavingFile.write(Textfield2.get('1.0', 'end'))
+	SavingFile.close()
+	'''
+	# Doesn't work yet
+	SavingFile = open(Weekfile, 'w')
+	SavingFile.write(Textfield1.get('1.0', 'end'))
+	SavingFile.close()
+	'''
+
+
+
+print(LogsListPath + DictionaryOfLogs[CurrentIndex])
+
+
 
 ImgSet1_path = "C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/"
 imgSet2_path = "C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/"
@@ -151,22 +236,25 @@ Img2.grid(row=2, column=18, columnspan=6) #, column=19, rowspan=12, columnspan=5
 
 
 
-button1 = Button(frame, text='week', width= 2 * collumnwidth)#, command=)
+button1 = Button(frame, text='week', width= 2 * collumnwidth, command=insert_week)
 button1.grid(row=0, column=0, columnspan=2, sticky='NSEW')
 button2 = Button(frame, text='month', width= 2 * collumnwidth)#, command=)
 button2.grid(row=0, column=2, columnspan=2, sticky='NSEW')
 button3 = Button(frame, text='semester', width= 2 * collumnwidth)#, command=)
 button3.grid(row=0, column=4, columnspan=2, sticky='NSEW')
-button4 = Button(frame, text='<', width= collumnwidth)#, command=)
+button4 = Button(frame, text='<', width= collumnwidth, command=BackwardCurrentIndex)
 button4.grid(row=0, column=6)
 Label1 = Label(frame, text=date.today(), width= 10* collumnwidth)#, command=)
 Label1.grid(row=0, column=7, columnspan=10, sticky='NSEW')
-button6 = Button(frame, text='>', width= collumnwidth)#, command=)
+button6 = Button(frame, text='>', width= collumnwidth, command=ForwardCurrentIndex)
 button6.grid(row=0, column=17)
 button7 = Button(frame, text='Logs', width= 2 * collumnwidth)#, command=)
 button7.grid(row=0, column=18, columnspan=2, sticky='NSEW')
-button8 = Button(frame, text='ImgDir', width= 3 * collumnwidth)#, command=)
+button8 = Button(frame, text='Save Changes', width= 3 * collumnwidth, command=SaveChanges)
 button8.grid(row=0, column=20, columnspan=3, sticky='NSEW')
+
+
+
 
 
 def exit():
@@ -179,10 +267,18 @@ button9.grid(row=0, column=23,  sticky='NSEW')
 
 
 
-Label2 = Label(frame, text='...', bg="white")
-Label2.grid(row=1, column=0, columnspan=6, rowspan=2, sticky='NSEW')
+Textfield1 = Text(frame,  bg="lightgrey")
+Textfield1.grid(row=1, column=0, columnspan=6, rowspan=2, sticky='NSEW')
 
-Label3 = Label(frame, text='...', bg="blue")
-Label3.grid(row=1, column=6, columnspan=12, rowspan=2, sticky='NSEW')
+
+Textfield2 = Text(frame,  bg="white")
+Textfield2.grid(row=1, column=6, columnspan=12, rowspan=2, sticky='NSEW')
+
+CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'r')
+CurrentLogContent = CurrentLogFile.read()
+CurrentLogFile.close()
+Textfield2.insert('1.0', CurrentLogContent)
+
+
 
 root.mainloop()
