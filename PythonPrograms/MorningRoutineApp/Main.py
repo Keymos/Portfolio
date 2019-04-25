@@ -6,10 +6,21 @@ import ctypes
 import math
 from datetime import datetime, date
 from random import randint
-import re
+from threading import Timer, Thread
+import time
 
 
+def PrintIt():
+	print('hey')
 
+def TheTimer():
+	o = 0
+	while o < 10:
+		Change_Images()
+		time.sleep(6.0)
+		o += 1
+		if o == 9:
+			o = 0
 
 
 
@@ -238,6 +249,9 @@ def Change_Images():
 
 
 
+
+
+
 	img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
 
 	img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS) # Image.[Somehing] check it, might find the silution to the resizing problem
@@ -411,6 +425,12 @@ LogsList.close()
 NumberOfLogs = (file_len("LogsList.txt"))
 
 
+# Images change every 6 seconds
+threadedTimer = Thread(target=TheTimer, daemon=True)
+threadedTimer.start()
+
+
 root.mainloop()
+
 
 # remember to make the app add a log if today's log doesn't have a file.
