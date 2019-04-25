@@ -4,8 +4,9 @@ from PIL import ImageTk, Image
 import os
 import ctypes
 import math
-from datetime import date
+from datetime import datetime, date
 from random import randint
+import re
 
 
 
@@ -90,7 +91,6 @@ LogsList.close()
 
 
 NumberOfLogs = (file_len("LogsList.txt"))
-print(NumberOfLogs , ' -----------------')
 
 
 DateIndexes = list(range(0, NumberOfLogs))
@@ -105,7 +105,7 @@ DictionaryOfLogs.pop(0)
 
 
 CurrentIndex = NumberOfLogs - 2
-print(CurrentIndex, ' is the current index')
+
 """
 The next two functions are for the buttons '<' and '>' and serve to display the 
 needed file content in textfield1
@@ -119,14 +119,13 @@ def ForwardCurrentIndex():
 		CurrentLogContent = CurrentLogFile.read()
 		CurrentLogFile.close()
 		Textfield2.insert('1.0', CurrentLogContent)
-		print(CurrentIndex, 'is the CurrentIndex')
+
 
 
 def BackwardCurrentIndex():
 	global CurrentIndex
 	if CurrentIndex > 0:
 		CurrentIndex = CurrentIndex - 1
-		print(CurrentIndex, ' is the CurrentIndex index')
 		Textfield2.delete('1.0', 'end')
 		CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex])
 		CurrentLogContent = CurrentLogFile.read()
@@ -149,10 +148,6 @@ def SaveChanges():
 	
 	SavingFile.write(Textfield1.get('1.0', 'end'))
 	SavingFile.close()
-
-
-
-print(LogsListPath + DictionaryOfLogs[CurrentIndex])
 
 
 
@@ -221,7 +216,6 @@ def Change_Images():
 	a = img1_width / 300
 	b = img1_height / RowHeight
 
-	print(a, b)
 	if a >= b:
 		c = a
 	else:
@@ -235,14 +229,14 @@ def Change_Images():
 	a = img2_width / 300
 	b = img2_height / RowHeight
 
-	print(a, b)
+
 	if a >= b:
 		c = a
 	else:
 		c = b
 
 
-	print(type(c))
+
 
 	img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
 
@@ -254,17 +248,10 @@ def Change_Images():
 	Img1.img1 = img1
 
 
-
-
-
-
-
-
-
 user32 = ctypes.windll.user32
 collumnwidth, rowheight =  math.trunc(user32.GetSystemMetrics(0) / 24) , math.trunc(user32.GetSystemMetrics(1) / 28)
 CollumnWidth, RowHeight = 5 * collumnwidth, 14 * rowheight
-print(CollumnWidth, RowHeight)
+
 
 '''
 Tk Code:
@@ -301,14 +288,12 @@ img1_width, img1_height = im1.size
 a = img1_width / 300
 b = img1_height / RowHeight
 
-print(a, b)
+
 if a >= b:
 	c = a
 else:
 	c = b
 
-
-print(c)
 
 img1_width, img1_height = round(img1_width / c) , round(img1_height / c)
 
@@ -322,14 +307,12 @@ img2_width, img2_height = im2.size
 a = img2_width / 300
 b = img2_height / RowHeight
 
-print(a, b)
+
 if a >= b:
 	c = a
 else:
 	c = b
 
-
-print(type(c))
 
 img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
 
@@ -384,8 +367,48 @@ Textfield2.grid(row=1, column=6, columnspan=12, rowspan=2, sticky='NSEW')
 CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'r')
 CurrentLogContent = CurrentLogFile.read()
 CurrentLogFile.close()
+
+
+DateAndTimeIndex = CurrentLogContent.find('/20')-5 
+DateOfToday = datetime.today().strftime('%d/%m/%Y')
+if (CurrentLogContent[DateAndTimeIndex:DateAndTimeIndex+10]) != DateOfToday:
+	CurrentIndex += 1
+	Logs_List = open("LogsList.txt", 'r')
+
+	fileLength = (file_len("LogsList.txt") - 2)
+	z = 0
+	while z < fileLength:
+		Logs_List.readline()
+		z += 1
+	NewDayLogFileName = (int(Logs_List.readline()[3:6])+1)
+	#if NewDayLogFileName 
+	if (NewDayLogFileName // 100) != 0:
+		NewDayLogFileName = str(NewDayLogFileName)
+	elif (NewDayLogFileName // 10) != 0:
+		NewDayLogFileName = '0' + str(NewDayLogFileName)
+	else:
+		NewDayLogFileName = '00' + str(NewDayLogFileName)
+	NewDayLogFileName = 'Day' + str(NewDayLogFileName + '.txt')
+	DictionaryOfLogs.append(NewDayLogFileName)
+
+	CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'w+')
+	CurrentLogFile.write('	'+ DateOfToday)
+	CurrentLogContent = CurrentLogFile.read()
+	CurrentLogFile.close()
+
+CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'r')
+CurrentLogContent = CurrentLogFile.read()
+CurrentLogFile.close()
 Textfield2.insert('1.0', CurrentLogContent)
 
+LogsListPath = 'C:/Users/Entertainment/Desktop/Portfolio/PythonPrograms/MorningRoutineApp/LogsArchiveTest/'
+LogsList = open("LogsList.txt", "w+")
+for i in (os.listdir(LogsListPath)):
+    LogsList.write(i + '\n')
+LogsList.close()
+
+
+NumberOfLogs = (file_len("LogsList.txt"))
 
 
 root.mainloop()

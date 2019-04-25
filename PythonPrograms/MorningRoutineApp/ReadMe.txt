@@ -23,4 +23,5 @@ Update 24/04/2019
 Update 25/04/2019.
 	- Saving changes in the textfields is now possible.
 	- Added a button to change the displayed images.
+	- If the program is running for the first time today, it will create a new file for it by itself.
 	A lot of garbage code though	
