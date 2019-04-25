@@ -19,4 +19,8 @@ Update 23/04/2019:
 Update 24/04/2019
 	What I did:
 	- The textfileds are almost done with the middle one of them working as I intended it to work while the left one is just a matter of some simple twaeking.
-	
+
+Update 25/04/2019.
+	- Saving changes in the textfields is now possible.
+	- Added a button to change the displayed images.
+	A lot of garbage code though	
