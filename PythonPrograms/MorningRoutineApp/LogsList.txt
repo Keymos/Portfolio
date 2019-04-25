@@ -1,5 +1,0 @@
-Day002.txt
-Day003.txt
-Day004.txt
-Day005.txt
-~$ Life & Work.docx
