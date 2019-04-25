@@ -39,15 +39,44 @@ def file_len(fname):
     return i + 1
 
 
+
+
+weekFilePath = 'C:/Users/Entertainment/Desktop/WeekGoals.txt'
 def insert_week():
+	global First_Textfield_index
 	# Gets the text from the file and fills the Textfield1 with it
 	global Weekfile
 	Textfield1.delete('1.0', 'end')
-	Weekfile = open('C:/Users/Entertainment/Desktop/FastGoals.txt')
+	Weekfile = open(weekFilePath)
 	WeekContent = Weekfile.read()
 	Weekfile.close()
 	Textfield1.insert('1.0', WeekContent)
+	First_Textfield_index = 1
 
+
+monthFilePath = 'C:/Users/Entertainment/Desktop/1MonthGoals.txt'
+def insert_month():
+	global First_Textfield_index
+	# Gets the text from the file and fills the Textfield1 with it
+	global monthfile
+	Textfield1.delete('1.0', 'end')
+	monthfile = open(monthFilePath)
+	monthContent = monthfile.read()
+	monthfile.close()
+	Textfield1.insert('1.0', monthContent)
+	First_Textfield_index = 2
+
+SixmonthFilePath = 'C:/Users/Entertainment/Desktop/6MonthGoals.txt'
+def insert_6month():
+	global First_Textfield_index
+	# Gets the text from the file and fills the Textfield1 with it
+	global Sixmonthfile
+	Textfield1.delete('1.0', 'end')
+	Sixmonthfile = open(SixmonthFilePath)
+	SixmonthContent = Sixmonthfile.read()
+	Sixmonthfile.close()
+	Textfield1.insert('1.0', SixmonthContent)
+	First_Textfield_index = 3
 
 
 '''
@@ -109,12 +138,17 @@ def SaveChanges():
 	SavingFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'w')
 	SavingFile.write(Textfield2.get('1.0', 'end'))
 	SavingFile.close()
-	'''
 	# Doesn't work yet
-	SavingFile = open(Weekfile, 'w')
+	global First_Textfield_index
+	if First_Textfield_index == 1:
+		SavingFile = open(weekFilePath, 'w')
+	elif First_Textfield_index == 2:
+		SavingFile = open(monthFilePath, 'w')
+	elif First_Textfield_index == 3:
+		SavingFile = open(SixmonthFilePath, 'w')
+	
 	SavingFile.write(Textfield1.get('1.0', 'end'))
 	SavingFile.close()
-	'''
 
 
 
@@ -125,26 +159,99 @@ print(LogsListPath + DictionaryOfLogs[CurrentIndex])
 ImgSet1_path = "C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/"
 imgSet2_path = "C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/"
 
-
-
 # ----get the needed random image path:----
 ImgSet1 = open("ImgSet1.txt", "w+")
 for i in (os.listdir(ImgSet1_path)):
     ImgSet1.write(i + '\n')
 ImgSet1.close()
-
 ImgSet1 = open("ImgSet1.txt", 'r')
-
 file_length = (file_len("ImgSet1.txt"))
 random_image_ImgSet1 = randint(0, file_length - 1)
-
+global image_ImgSet1_name
 i = 0
 while i < random_image_ImgSet1:
     (ImgSet1.readline())
     i = i + 1
 image_ImgSet1_name=(ImgSet1_path + ImgSet1.readline().strip('\n'))
-print(image_ImgSet1_name)
+ImgSet1.close()
 
+global image_ImgSet2_name
+ImgSet1 = open("ImgSet1.txt", 'r')
+random_image_ImgSet2 = randint(0, file_length - 1)
+
+i = 0
+while i < random_image_ImgSet2:
+    (ImgSet1.readline())
+    i = i + 1
+image_ImgSet2_name = (ImgSet1_path + ImgSet1.readline().strip('\n'))
+
+def Change_Images():
+	# ----get the needed random image path:----
+	ImgSet1 = open("ImgSet1.txt", "w+")
+	for i in (os.listdir(ImgSet1_path)):
+	    ImgSet1.write(i + '\n')
+	ImgSet1.close()
+
+	ImgSet1 = open("ImgSet1.txt", 'r')
+
+	file_length = (file_len("ImgSet1.txt"))
+	random_image_ImgSet1 = randint(0, file_length - 1)
+
+	global image_ImgSet1_name
+	i = 0
+	while i < random_image_ImgSet1:
+	    (ImgSet1.readline())
+	    i = i + 1
+	image_ImgSet1_name=(ImgSet1_path + ImgSet1.readline().strip('\n'))
+	ImgSet1.close()
+	
+	global image_ImgSet2_name
+
+	ImgSet1 = open("ImgSet1.txt", 'r')
+	random_image_ImgSet2 = randint(0, file_length - 1)
+	
+	i = 0
+	while i < random_image_ImgSet2:
+	    (ImgSet1.readline())
+	    i = i + 1
+	image_ImgSet2_name = (ImgSet1_path + ImgSet1.readline().strip('\n'))
+
+	im1 = Image.open(image_ImgSet1_name)
+	img1_width, img1_height = im1.size
+	a = img1_width / 300
+	b = img1_height / RowHeight
+
+	print(a, b)
+	if a >= b:
+		c = a
+	else:
+		c = b
+
+	img1_width, img1_height = round(img1_width / c) , round(img1_height / c)
+	img1 = ImageTk.PhotoImage(im1.resize((img1_width, img1_height)), Image.ANTIALIAS)
+		
+	im2 = Image.open(image_ImgSet2_name)
+	img2_width, img2_height = im2.size
+	a = img2_width / 300
+	b = img2_height / RowHeight
+
+	print(a, b)
+	if a >= b:
+		c = a
+	else:
+		c = b
+
+
+	print(type(c))
+
+	img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
+
+	img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS) # Image.[Somehing] check it, might find the silution to the resizing problem
+	Img2.configure(image=img2)
+	Img2.img2 = img2
+
+	Img1.configure(image=img1)
+	Img1.img1 = img1
 
 
 
@@ -189,7 +296,7 @@ for y in Range:
 
 # Getting the needed image sizes
 
-im1 = Image.open("C:/HardDriveTempoCopy/MULTIBOOT/Pictures/DreamBoard/Gals/Women/17267385_726769827510669_6374602035660062720_n.jpg")
+im1 = Image.open(image_ImgSet1_name)
 img1_width, img1_height = im1.size
 a = img1_width / 300
 b = img1_height / RowHeight
@@ -210,7 +317,7 @@ Img1 = Label(frame, image=img1)
 Img1.grid(row=1, column=18, columnspan=6)
 
 
-im2 = Image.open(image_ImgSet1_name)
+im2 = Image.open(image_ImgSet2_name)
 img2_width, img2_height = im2.size
 a = img2_width / 300
 b = img2_height / RowHeight
@@ -229,7 +336,7 @@ img2_width, img2_height = math.ceil(img2_width / c) , math.ceil(img2_height / c)
 img2 = ImageTk.PhotoImage(im2.resize((img2_width, img2_height)), Image.ANTIALIAS) # Image.[Somehing] check it, might find the silution to the resizing problem
 Img2 = Label(frame, image=img2)
 Img2.img2 = img2
-Img2.grid(row=2, column=18, columnspan=6) #, column=19, rowspan=12, columnspan=5)
+Img2.grid(row=2, column=18, columnspan=6)
 
 
 
@@ -238,19 +345,19 @@ Img2.grid(row=2, column=18, columnspan=6) #, column=19, rowspan=12, columnspan=5
 
 button1 = Button(frame, text='week', width= 2 * collumnwidth, command=insert_week)
 button1.grid(row=0, column=0, columnspan=2, sticky='NSEW')
-button2 = Button(frame, text='month', width= 2 * collumnwidth)#, command=)
+button2 = Button(frame, text='month', width= 2 * collumnwidth, command=insert_month)
 button2.grid(row=0, column=2, columnspan=2, sticky='NSEW')
-button3 = Button(frame, text='semester', width= 2 * collumnwidth)#, command=)
+button3 = Button(frame, text='semester', width= 2 * collumnwidth, command=insert_6month)
 button3.grid(row=0, column=4, columnspan=2, sticky='NSEW')
 button4 = Button(frame, text='<', width= collumnwidth, command=BackwardCurrentIndex)
 button4.grid(row=0, column=6)
-Label1 = Label(frame, text=date.today(), width= 10* collumnwidth)#, command=)
+Label1 = Label(frame, text=date.today(), width= 10* collumnwidth)
 Label1.grid(row=0, column=7, columnspan=10, sticky='NSEW')
 button6 = Button(frame, text='>', width= collumnwidth, command=ForwardCurrentIndex)
 button6.grid(row=0, column=17)
-button7 = Button(frame, text='Logs', width= 2 * collumnwidth)#, command=)
+button7 = Button(frame, text='SaveChanges', width= 2 * collumnwidth, command=SaveChanges)#, command=)
 button7.grid(row=0, column=18, columnspan=2, sticky='NSEW')
-button8 = Button(frame, text='Save Changes', width= 3 * collumnwidth, command=SaveChanges)
+button8 = Button(frame, text='Change Images', width= 3 * collumnwidth, command=Change_Images)
 button8.grid(row=0, column=20, columnspan=3, sticky='NSEW')
 
 
@@ -282,3 +389,5 @@ Textfield2.insert('1.0', CurrentLogContent)
 
 
 root.mainloop()
+
+# remember to make the app add a log if today's log doesn't have a file.
