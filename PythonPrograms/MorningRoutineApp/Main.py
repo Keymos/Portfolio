@@ -371,11 +371,11 @@ button9.grid(row=0, column=23,  sticky='NSEW')
 
 
 
-Textfield1 = Text(frame,  bg="lightgrey")
+Textfield1 = Text(frame,  bg="lightgrey", wrap=WORD)
 Textfield1.grid(row=1, column=0, columnspan=6, rowspan=2, sticky='NSEW')
 
 
-Textfield2 = Text(frame,  bg="white")
+Textfield2 = Text(frame,  bg="white", wrap=WORD)
 Textfield2.grid(row=1, column=6, columnspan=12, rowspan=2, sticky='NSEW')
 
 CurrentLogFile = open(LogsListPath + DictionaryOfLogs[CurrentIndex], 'r')
