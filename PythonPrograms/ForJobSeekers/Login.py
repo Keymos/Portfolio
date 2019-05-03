@@ -26,44 +26,52 @@ def Login():
 		CurrentUserFile.write(str(CurrentUser))
 		CurrentUserFile.close()
 		subprocess.run(["Python", "UserPanel.py"])
+	else:
+		print('Error')
 
 
 def Register():
+	# Checks if Username and Pass combination is unique before adding it to the database. 
 	CurrentUser = [TextField_Username.get("1.0", END).strip('\n'), TextField_Password.get("1.0", END).strip('\n')]
 	if CurrentUser in UserDataBaseList:
 		print('Error')
-	else:
+	elif ';;;' in TextField_Username.get("1.0", END).strip('\n') or ';;;' in TextField_Password.get("1.0", END).strip('\n'):
+		print('Error')
+	else: 
 		UserDataBaseList.append(CurrentUser)
 		TotalUsers =+ 1
 		UsersDatabase = open('UsersDatabase.txt','a+')
-		y = str('\n' + TextField_Username.get("1.0", END).strip('\n') + '; ' + TextField_Password.get("1.0", END).strip('\n'))
+		y = str('\n' + TextField_Username.get("1.0", END).strip('\n') + ';;; ' + TextField_Password.get("1.0", END).strip('\n'))
 		UsersDatabase.write(y)
 		UserDataBase.close()
 
-# Users' Informations retreival:
 
+# Users' Informations retreival if the database is there, otherwise
+# create a new one.
 if os.path.isfile('UsersDatabase.txt') == False:
-	UsersDatabase = open('UsersDatabase.txt','w+')
+	UsersDatabase = open('UsersDatabase.txt', 'w+')
 	UsersDatabase.close()
-
 TotalUsers = file_len('UsersDatabase.txt')
-print(TotalUsers)
-
-UsersDatabase = open('UsersDatabase.txt','r+')
+UsersDatabase = open('UsersDatabase.txt', 'r+')
 UserDataBaseList = []
 i = 0
 while i < TotalUsers:
-	x =  str(UsersDatabase.readline()).strip('\n').split('; ')
+	x =  str(UsersDatabase.readline()).strip('\n').split(';;; ')
 	UserDataBaseList.append(x)
 	i += 1
-print(UserDataBaseList)
+
+# Checks if Jobs' Database file is present, if not, creates one.
+if os.path.isfile('JobsDatabase.txt') == False:
+	JobsDatabase = open('JobsDatabase.txt', 'w+')
+	JobsDatabase.close()
+
 
 # GUI:
 root = Tk()
 root.title("Hire now")
 
-frame=Frame(root, height=100)
-frame.grid(row=0, column=0, sticky=N+S+E+W)
+frame = Frame(root, height=100)
+frame.grid(row=0, column=0, sticky=N + S + E + W)
 
 Label_Username = Label(frame, text="Username:", padx=10, pady=7)
 Label_Username.grid(row=0, column=0)
