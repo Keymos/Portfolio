@@ -1,8 +1,13 @@
 from tkinter import *
 from tkinter import ttk
+import subprocess
 
 
-
+def Login_Admin():
+	if TextField_Username.get("1.0", END).strip('\n') == 'admin':
+		if TextField_Password.get("1.0", END).strip('\n') == 'admin':
+			subprocess.run(["Python", "AdminPanel.py"])
+	
 root = Tk()
 root.title("Hire now")
 
@@ -21,7 +26,7 @@ Label_Password.grid(row=1, column=0)
 TextField_Password = Text(frame, height=1, width=20)
 TextField_Password.grid(row=1, column=1)
 
-Button_Login = Button(frame, text='Log In', padx=5)#, command=insert_week)
+Button_Login = Button(frame, text='Log In', padx=5, command=Login_Admin)
 Button_Login.grid(row=0, column=2, columnspan=2)
 
 Button_Register = Button(frame, text='Register')#, command=insert_week)
