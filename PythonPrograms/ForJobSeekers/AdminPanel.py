@@ -3,6 +3,8 @@ from tkinter import ttk
 
 
 def Grid_AddJobOffer_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
 	Frame_BrowseAndUpdate.grid_forget()
 	Frame_SearchJobSeekers.grid_forget()
 	SearchJob_SearchButton.grid_forget()
@@ -30,6 +32,8 @@ def Grid_AddJobOffer_Show():
 	Mission.grid(row=10, column=1, columnspan=3)
 
 def Grid_BrowseAndUpdate_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
 	DeleteJobOfferButton.grid_forget()
 	Frame_BrowseAndUpdate.grid_forget()
 	Frame_AddJobOffer.grid_forget()
@@ -40,10 +44,14 @@ def Grid_BrowseAndUpdate_Show():
 	SearchJob_SearchButton.grid(row=0, column=4)
 
 def SearchJob():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
 	Grid_AddJobOffer_Show()
 	SearchButton2.grid(row=0, column=1, sticky=E)
 
 def Grid_DeleteJobOffer_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
 	Frame_AddJobOffer.grid_forget()
 	SearchJob_SearchButton.grid_forget()
 	Frame_SearchJobSeekers.grid_forget()
@@ -53,6 +61,8 @@ def Grid_DeleteJobOffer_Show():
 	DeleteJobOfferButton.grid(row=0, column=4)
 
 def Grid_SearchJobSeekers_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
 	DeleteJobOfferButton.grid_forget()
 	Frame_BrowseAndUpdate.grid_forget()
 	Frame_AddJobOffer.grid_forget()
@@ -61,6 +71,11 @@ def Grid_SearchJobSeekers_Show():
 	SearchAll_Button.grid(row=2, column=0)
 	SearchByJobOfferAppliedTo_Button.grid(row=2, column=1)
 	SearchByJob_TextField.grid(row=2, column=2)
+
+def Grid_BrowseAllJobSeekers_Show():
+	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
+	scrollbar.grid(row=1, column=3, sticky=S+N+E)
+	print("bzz")
 
 root = Tk()
 root.title("Hire now !")
@@ -119,9 +134,17 @@ DeleteJobOfferButton = Button (Frame_BrowseAndUpdate, text="Delete")#, command=
 
 Frame_SearchJobSeekers = Frame(frame)
 SearchBy_Label = Label(Frame_SearchJobSeekers, text="Search by:")
-SearchAll_Button = Button(Frame_SearchJobSeekers, text="All")
+SearchAll_Button = Button(Frame_SearchJobSeekers, text="All", command=Grid_BrowseAllJobSeekers_Show)
 SearchByJobOfferAppliedTo_Button = Button(Frame_SearchJobSeekers,text="Search by job ID:")
 SearchByJob_TextField = Text(Frame_SearchJobSeekers, height=1, width=25)
 
+
+scrollbar = Scrollbar(frame)
+
+AllJobSeekers_Textfield = Text(frame, width=90, height=30, yscrollcommand=scrollbar.set)
+AllJobSeekers_Textfield.insert('1.0', "Job 1 \n", "line1", "line 2  ", "line2", "\nwhatever", "line3")
+AllJobSeekers_Textfield.tag_config("line1", foreground="blue")
+
+scrollbar.config(command=AllJobSeekers_Textfield.yview)
 
 root.mainloop()

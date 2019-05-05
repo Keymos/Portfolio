@@ -3,6 +3,7 @@ from tkinter import ttk
 
 
 def Grid_AddJobOffer_Show():
+	scrollbar.grid_forget()
 	Frame_AddJobOffer.grid_forget()
 	UserID_Label.grid_forget()
 	updateUserInfo_Botton.grid_forget()
@@ -40,6 +41,7 @@ def Grid_BrowseAndUpdate_Show():
 
 def Grid_UpdateJobSekkerInformation_Show():
 	AllJobOffers_Textfield.grid_forget()
+	scrollbar.grid_forget()
 	updateUserInfo_Botton.grid(row=0, column=1, sticky=E)
 	ApplyForJob_Button.grid_forget()
 	SearchButton2.grid_forget()
