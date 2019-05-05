@@ -55,7 +55,7 @@ def AddJob():
 			print('bzz')
 		else:
 			x = open('./List of Jobs/%s.txt' % JobID, 'a+')
-			x.write(">>>" + CompanyInformationName.get('1.0', 'end').strip('\n'))
+			x.write(CompanyInformationName.get('1.0', 'end').strip('\n'))
 			x.write("\n>>>" + CompanyInformationAdress.get('1.0', 'end').strip('\n'))
 			x.write("\n>>>" + CompanyInformationPhone.get('1.0', 'end').strip('\n'))
 			x.write("\n>>>" + CompanyInformationEmail.get('1.0', 'end').strip('\n'))
