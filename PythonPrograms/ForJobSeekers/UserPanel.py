@@ -5,7 +5,10 @@ from tkinter import ttk
 def Grid_AddJobOffer_Show():
 	Frame_AddJobOffer.grid_forget()
 	UserID_Label.grid_forget()
+	updateUserInfo_Botton.grid_forget()
+	AllJobOffers_Textfield.grid_forget()
 	SearchButton2.grid(row=0, column=1, sticky=E)
+	ApplyForJob_Button.grid(row=0, column=2, sticky=W)
 	Frame_AddJobOffer.grid(row=1, columnspan=4)
 	AddJobOffer_JobID_Label.grid(row=0, column=0)
 	AddJobOffer_JobID.grid(row=0, column=1, sticky=W)
@@ -32,8 +35,13 @@ def Grid_AddJobOffer_Show():
 def Grid_BrowseAndUpdate_Show():
 	SearchButton2.grid_forget()
 	Frame_AddJobOffer.grid_forget()
+	AllJobOffers_Textfield.grid(row=1, column=0, columnspan=3, sticky=W)
+	scrollbar.grid(row=1, column=2, sticky=S+N+E)
 
 def Grid_UpdateJobSekkerInformation_Show():
+	AllJobOffers_Textfield.grid_forget()
+	updateUserInfo_Botton.grid(row=0, column=1, sticky=E)
+	ApplyForJob_Button.grid_forget()
 	SearchButton2.grid_forget()
 	Frame_AddJobOffer.grid_forget()
 	Frame_AddJobOffer.grid(row=1, columnspan=4)
@@ -103,8 +111,17 @@ Mission_Label = Label(Frame_AddJobOffer, text="Mission:")
 Mission = Text(Frame_AddJobOffer, height=5, width=50)
 
 SearchButton2 = Button(Frame_AddJobOffer, text="Search")#, command=SearchJob)
+ApplyForJob_Button = Button(Frame_AddJobOffer, text="Apply")
+updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update")
 
 
+scrollbar = Scrollbar(frame)
+
+AllJobOffers_Textfield = Text(frame, width=66, height=30, yscrollcommand=scrollbar.set)
+AllJobOffers_Textfield.insert('1.0', "Job 1 \n", "line1", "line 2  ", "line2", "\nwhatever", "line3")
+AllJobOffers_Textfield.tag_config("line1", foreground="blue")
+
+scrollbar.config(command=AllJobOffers_Textfield.yview)
 
 
 root.mainloop()
