@@ -3,84 +3,11 @@ from tkinter import ttk
 import os
 
 
-def Grid_AddJobOffer_Show():
-	scrollbar.grid_forget()
-	AllJobSeekers_Textfield.grid_forget()
-	Frame_BrowseAndUpdate.grid_forget()
-	Frame_SearchJobSeekers.grid_forget()
-	SearchJob_SearchButton.grid_forget()
-	SearchButton2.grid_forget()
-	Frame_AddJobOffer.grid(row=1, columnspan=4)
-	AddJobOffer_JobID_Label.grid(row=0, column=0)
-	AddJobOffer_JobID.grid(row=0, column=1, sticky=W)
-	CompanyInformation_Label.grid(row=1, column=0, columnspan=4, sticky=W)
-	CompanyInformationName_Label.grid(row=2, column=0)
-	CompanyInformationName.grid(row=2, column=1, columnspan=3)
-	CompanyInformationAdress_Label.grid(row=3, column=0)
-	CompanyInformationAdress.grid(row=3, column=1, columnspan=3)
-	CompanyInformationPhone_Label.grid(row=4, column=0)
-	CompanyInformationPhone.grid(row=4, column=1, columnspan=3)
-	CompanyInformationEmail_Label.grid(row=5, column=0)
-	CompanyInformationEmail.grid(row=5, column=1, columnspan=3)
-	RequestedProfileDescription_Label.grid(row=6, column=0, columnspan=4, sticky=W)
-	Degree_Label.grid(row=7, column=0)
-	Degree.grid(row=7, column=1, columnspan=3)
-	Qualification_Label.grid(row=8, column=0)
-	Qualification.grid(row=8, column=1, columnspan=3)
-	Experience_Label.grid(row=9, column=0)
-	Experience.grid(row=9, column=1, columnspan=3)
-	Mission_Label.grid(row=10, column=0)
-	Mission.grid(row=10, column=1, columnspan=3)
-	AddjobButton2.grid(row=0, column=1, sticky=E)
-
-def Grid_BrowseAndUpdate_Show():
-	AddjobButton2.grid_forget()
-	scrollbar.grid_forget()
-	AllJobSeekers_Textfield.grid_forget()
-	DeleteJobOfferButton.grid_forget()
-	Frame_BrowseAndUpdate.grid_forget()
-	Frame_AddJobOffer.grid_forget()
-	Frame_SearchJobSeekers.grid_forget()
-	Frame_BrowseAndUpdate.grid(row=1, columnspan=4)
-	SearchJobID_Label.grid(row=0, column=0, sticky=W)
-	SearchJobID.grid(row=0, column=1, columnspan=3)
-	SearchJob_SearchButton.grid(row=0, column=4)
-
-def SearchJob():
-	scrollbar.grid_forget()
-	AllJobSeekers_Textfield.grid_forget()
-	Grid_AddJobOffer_Show()
-	SearchButton2.grid(row=0, column=1, sticky=E)
-	AddjobButton2.grid_forget()
-
-
-def Grid_DeleteJobOffer_Show():
-	scrollbar.grid_forget()
-	AllJobSeekers_Textfield.grid_forget()
-	Frame_AddJobOffer.grid_forget()
-	SearchJob_SearchButton.grid_forget()
-	Frame_SearchJobSeekers.grid_forget()
-	Frame_BrowseAndUpdate.grid(row=1, columnspan=4)
-	SearchJobID_Label.grid(row=0, column=0, sticky=W)
-	SearchJobID.grid(row=0, column=1, columnspan=3)
-	DeleteJobOfferButton.grid(row=0, column=4)
-
-def Grid_SearchJobSeekers_Show():
-	scrollbar.grid_forget()
-	AllJobSeekers_Textfield.grid_forget()
-	DeleteJobOfferButton.grid_forget()
-	Frame_BrowseAndUpdate.grid_forget()
-	Frame_AddJobOffer.grid_forget()
-	Frame_SearchJobSeekers.grid(row=1, columnspan=4)
-	SearchBy_Label.grid(row=1, column=0)
-	SearchAll_Button.grid(row=2, column=0)
-	SearchByJobOfferAppliedTo_Button.grid(row=2, column=1)
-	SearchByJob_TextField.grid(row=2, column=2)
-
-def Grid_BrowseAllJobSeekers_Show():
-	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
-	scrollbar.grid(row=1, column=3, sticky=S+N+E)
-	print("bzz")
+'''
+What's left to be done:
+	The search all job seekers thing
+	Job seekers' back end.
+'''
 
 
 
@@ -92,8 +19,15 @@ def Grid_BrowseAllJobSeekers_Show():
 
 
 
-
-
+def clearAllfields():
+	CompanyInformationName.delete('1.0', 'end')
+	CompanyInformationAdress.delete('1.0', 'end')
+	CompanyInformationPhone.delete('1.0', 'end')
+	CompanyInformationEmail.delete('1.0', 'end')
+	Degree.delete('1.0', 'end')
+	Qualification.delete('1.0', 'end')
+	Experience.delete('1.0', 'end')
+	Mission.delete('1.0', 'end')
 
 
 
@@ -143,13 +77,145 @@ def DeleteJob():
 		AllJobsList.remove(x)
 
 def BrowseJobOffers():
-	x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
-	print(x)
-	if x in AllJobsList:
-		z = open('./List of Jobs/%s.txt' % x, 'w')
 	pass
 
+'''
+def FillFields(Filename):
+	x = open(Filename, 'r')
+	z = x.read().strip('\n')
+	y = z.split('>>>')
+	print(z)
+	CompanyInformationName.insert('1.0', y[1])
+	CompanyInformationAdress.insert('1.0', y[2])
+	CompanyInformationPhone.insert('1.0', y[3])
+	CompanyInformationEmail.insert('1.0', y[4])
+	Degree.insert('1.0', y[5])
+	Qualification.insert('1.0', y[6])
+	Experience.insert('1.0', y[7])
+	Mission.insert('1.0', y[8])'''
 
+
+
+def SearchJobOffer():
+	if (SearchJobID.get('1.0', 'end').strip('\n')) != '':
+		x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
+	else:
+		x = (AddJobOffer_JobID.get('1.0', 'end').strip('\n')).zfill(8)
+	if x in AllJobsList:
+		x = open('./List of Jobs/%s.txt' % x, 'r')
+		z = x.read().strip('\n')
+		y = z.split('\n>>>')
+		# print(y)
+		clearAllfields()
+		CompanyInformationName.insert('1.0', y[0])
+		CompanyInformationAdress.insert('1.0', y[1])
+		CompanyInformationPhone.insert('1.0', y[2])
+		CompanyInformationEmail.insert('1.0', y[3])
+		Degree.insert('1.0', y[4])
+		Qualification.insert('1.0', y[5])
+		Experience.insert('1.0', y[6])
+		Mission.insert('1.0', y[7])
+	else:
+		print('bzz')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def Grid_AddJobOffer_Show():
+	clearAllfields()
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
+	Frame_BrowseAndUpdate.grid_forget()
+	Frame_SearchJobSeekers.grid_forget()
+	SearchJob_SearchButton.grid_forget()
+	SearchButton2.grid_forget()
+	Frame_AddJobOffer.grid(row=1, columnspan=4)
+	AddJobOffer_JobID_Label.grid(row=0, column=0)
+	AddJobOffer_JobID.grid(row=0, column=1, sticky=W)
+	CompanyInformation_Label.grid(row=1, column=0, columnspan=4, sticky=W)
+	CompanyInformationName_Label.grid(row=2, column=0)
+	CompanyInformationName.grid(row=2, column=1, columnspan=3)
+	CompanyInformationAdress_Label.grid(row=3, column=0)
+	CompanyInformationAdress.grid(row=3, column=1, columnspan=3)
+	CompanyInformationPhone_Label.grid(row=4, column=0)
+	CompanyInformationPhone.grid(row=4, column=1, columnspan=3)
+	CompanyInformationEmail_Label.grid(row=5, column=0)
+	CompanyInformationEmail.grid(row=5, column=1, columnspan=3)
+	RequestedProfileDescription_Label.grid(row=6, column=0, columnspan=4, sticky=W)
+	Degree_Label.grid(row=7, column=0)
+	Degree.grid(row=7, column=1, columnspan=3)
+	Qualification_Label.grid(row=8, column=0)
+	Qualification.grid(row=8, column=1, columnspan=3)
+	Experience_Label.grid(row=9, column=0)
+	Experience.grid(row=9, column=1, columnspan=3)
+	Mission_Label.grid(row=10, column=0)
+	Mission.grid(row=10, column=1, columnspan=3)
+	AddjobButton2.grid(row=0, column=1, sticky=E)
+
+def Grid_BrowseAndUpdate_Show():
+	AddjobButton2.grid_forget()
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
+	DeleteJobOfferButton.grid_forget()
+	Frame_BrowseAndUpdate.grid_forget()
+	Frame_AddJobOffer.grid_forget()
+	Frame_SearchJobSeekers.grid_forget()
+	Frame_BrowseAndUpdate.grid(row=1, columnspan=4)
+	SearchJobID_Label.grid(row=0, column=0, sticky=W)
+	SearchJobID.grid(row=0, column=1, columnspan=3)
+	SearchJob_SearchButton.grid(row=0, column=4)
+
+def SearchJob():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
+	Grid_AddJobOffer_Show()
+	SearchButton2.grid(row=0, column=1, sticky=E)
+	AddjobButton2.grid_forget()
+	SearchJobOffer()
+	SearchJobID.delete('1.0', 'end')
+	AddJobOffer_JobID.delete('1.0', 'end')
+
+
+def Grid_DeleteJobOffer_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
+	Frame_AddJobOffer.grid_forget()
+	SearchJob_SearchButton.grid_forget()
+	Frame_SearchJobSeekers.grid_forget()
+	Frame_BrowseAndUpdate.grid(row=1, columnspan=4)
+	SearchJobID_Label.grid(row=0, column=0, sticky=W)
+	SearchJobID.grid(row=0, column=1, columnspan=3)
+	DeleteJobOfferButton.grid(row=0, column=4)
+
+def Grid_SearchJobSeekers_Show():
+	scrollbar.grid_forget()
+	AllJobSeekers_Textfield.grid_forget()
+	DeleteJobOfferButton.grid_forget()
+	Frame_BrowseAndUpdate.grid_forget()
+	Frame_AddJobOffer.grid_forget()
+	Frame_SearchJobSeekers.grid(row=1, columnspan=4)
+	SearchBy_Label.grid(row=1, column=0)
+	SearchAll_Button.grid(row=2, column=0)
+	SearchByJobOfferAppliedTo_Button.grid(row=2, column=1)
+	SearchByJob_TextField.grid(row=2, column=2)
+
+def Grid_BrowseAllJobSeekers_Show():
+	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
+	scrollbar.grid(row=1, column=3, sticky=S+N+E)
+	print("bzz")
 
 
 
