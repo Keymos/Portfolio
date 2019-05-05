@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import os
 
 
 def Grid_AddJobOffer_Show():
@@ -30,8 +31,10 @@ def Grid_AddJobOffer_Show():
 	Experience.grid(row=9, column=1, columnspan=3)
 	Mission_Label.grid(row=10, column=0)
 	Mission.grid(row=10, column=1, columnspan=3)
+	AddjobButton2.grid(row=0, column=1, sticky=E)
 
 def Grid_BrowseAndUpdate_Show():
+	AddjobButton2.grid_forget()
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
 	DeleteJobOfferButton.grid_forget()
@@ -48,6 +51,8 @@ def SearchJob():
 	AllJobSeekers_Textfield.grid_forget()
 	Grid_AddJobOffer_Show()
 	SearchButton2.grid(row=0, column=1, sticky=E)
+	AddjobButton2.grid_forget()
+
 
 def Grid_DeleteJobOffer_Show():
 	scrollbar.grid_forget()
@@ -76,6 +81,94 @@ def Grid_BrowseAllJobSeekers_Show():
 	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
 	scrollbar.grid(row=1, column=3, sticky=S+N+E)
 	print("bzz")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def Index_LoadAllJobOffersIDs():
+	global AllJobsList
+	AllJobsList = os.listdir("./List Of Jobs/")
+	print(len(AllJobsList))
+	j = 0
+	while j < len(AllJobsList):
+		AllJobsList[j] = AllJobsList[j].strip('.txt')
+		j += 1
+
+Index_LoadAllJobOffersIDs()
+
+
+
+
+global JobID
+def AddJob():
+	try:
+		JobID = int(str(AddJobOffer_JobID.get('1.0', END)).strip('\n'))
+		JobID = str(JobID).zfill(8)
+		if JobID in AllJobsList:
+			print('bzz')
+		else:
+			x = open('./List of Jobs/%s.txt' % JobID, 'a+')
+			x.write(">>>" + CompanyInformationName.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + CompanyInformationAdress.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + CompanyInformationPhone.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + CompanyInformationEmail.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + Degree.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + Qualification.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + Experience.get('1.0', 'end').strip('\n'))
+			x.write("\n>>>" + Mission.get('1.0', 'end').strip('\n'))
+			x.close()
+			Index_LoadAllJobOffersIDs()
+	except ValueError:
+		print("The input was not a valid integer.")
+
+
+def DeleteJob():
+	x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
+	print(x)
+	if x in AllJobsList:
+		os.remove('./List of Jobs/%s.txt' % x)
+		AllJobsList.remove(x)
+
+def BrowseJobOffers():
+	x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
+	print(x)
+	if x in AllJobsList:
+		z = open('./List of Jobs/%s.txt' % x, 'w')
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 root = Tk()
 root.title("Hire now !")
@@ -121,6 +214,7 @@ Mission_Label = Label(Frame_AddJobOffer, text="Mission:")
 Mission = Text(Frame_AddJobOffer, height=5, width=75)
 
 SearchButton2 = Button(Frame_AddJobOffer, text="Search", command=SearchJob)
+AddjobButton2 = Button(Frame_AddJobOffer, text="Add", command=AddJob)
 
 
 # Browse and update
@@ -130,7 +224,7 @@ SearchJobID_Label = Label(Frame_BrowseAndUpdate, text="Job ID:")
 SearchJobID = Text(Frame_BrowseAndUpdate, height=1, width=25)
 SearchJob_SearchButton = Button(Frame_BrowseAndUpdate, text="Search", command=SearchJob)
 
-DeleteJobOfferButton = Button (Frame_BrowseAndUpdate, text="Delete")#, command=
+DeleteJobOfferButton = Button (Frame_BrowseAndUpdate, text="Delete", command=DeleteJob)
 
 Frame_SearchJobSeekers = Frame(frame)
 SearchBy_Label = Label(Frame_SearchJobSeekers, text="Search by:")
