@@ -1,5 +1,33 @@
 from tkinter import *
 from tkinter import ttk
+import os
+
+
+
+def Index_LoadAllJobOffersIDs():
+	global AllJobsList
+	AllJobsList = os.listdir("./List Of Jobs/")
+	print(len(AllJobsList))
+	j = 0
+	while j < len(AllJobsList):
+		AllJobsList[j] = AllJobsList[j].strip('.txt')
+		j += 1
+
+Index_LoadAllJobOffersIDs()
+
+def GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekerid):
+	# Jobid is a string
+	JobSeekerfile = open('./List Of Jobs/%s.txt'% JobSeekerid, 'r')
+	x = JobSeekerfile.readline().strip('\n')
+	JobSeekerfile.close()
+	return x
+
+def ShowAllJObs():
+	AllJobOffers_Textfield.delete('1.0', 'end')
+	i = len(AllJobsList)
+	while i != 0:
+		AllJobOffers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobsList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobsList[i-1])), 'tag %s'%AllJobsList[i-1])
+		i = i - 1
 
 
 def Grid_AddJobOffer_Show():
@@ -92,7 +120,7 @@ AddJobOffer_JobID = Text(Frame_AddJobOffer, height=1, width=25)
 
 UserID_Label = Label(Frame_AddJobOffer, text="User ID")
 
-CompanyInformation_Label = Label(Frame_AddJobOffer, text="Company Information:")
+CompanyInformation_Label = Label(Frame_AddJobOffer, text="User Information:")
 CompanyInformationName_Label = Label(Frame_AddJobOffer, text="Name:")
 CompanyInformationName = Text(Frame_AddJobOffer, height=1, width=50)
 CompanyInformationAdress_Label = Label(Frame_AddJobOffer, text="Adress:")
@@ -102,7 +130,7 @@ CompanyInformationPhone = Text(Frame_AddJobOffer, height=1, width=50)
 CompanyInformationEmail_Label = Label(Frame_AddJobOffer, text="Email:")
 CompanyInformationEmail = Text(Frame_AddJobOffer, height=1, width=50)
 
-RequestedProfileDescription_Label = Label(Frame_AddJobOffer, text="Requested Profile Description:")
+RequestedProfileDescription_Label = Label(Frame_AddJobOffer, text="Profile Description:")
 Degree_Label = Label(Frame_AddJobOffer, text="Degree:")
 Degree = Text(Frame_AddJobOffer, height=5, width=50)
 Qualification_Label = Label(Frame_AddJobOffer, text="Qualification:")
@@ -120,8 +148,6 @@ updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update")
 scrollbar = Scrollbar(frame)
 
 AllJobOffers_Textfield = Text(frame, width=66, height=30, yscrollcommand=scrollbar.set)
-AllJobOffers_Textfield.insert('1.0', "Job 1 \n", "line1", "line 2  ", "line2", "\nwhatever", "line3")
-AllJobOffers_Textfield.tag_config("line1", foreground="blue")
 
 scrollbar.config(command=AllJobOffers_Textfield.yview)
 

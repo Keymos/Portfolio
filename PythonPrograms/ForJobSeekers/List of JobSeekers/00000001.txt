@@ -1,0 +1,9 @@
+Jobseeker1
+>>>Adress1
+>>>Phone1
+>>>Email1
+>>>Degree1
+>>>Qualification1
+>>>Experience1
+>>>Mission1
+>>> 00000001

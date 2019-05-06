@@ -19,6 +19,8 @@ What's left to be done:
 
 
 
+
+
 def clearAllfields():
 	CompanyInformationName.delete('1.0', 'end')
 	CompanyInformationAdress.delete('1.0', 'end')
@@ -32,6 +34,19 @@ def clearAllfields():
 
 
 
+
+def Index_LoadAllJobSeekersIDs():
+	global AllJobSeekersList
+	AllJobSeekersList = os.listdir("./List Of JobSeekers/")
+	print(len(AllJobSeekersList))
+	j = 0
+	while j < len(AllJobSeekersList):
+		AllJobSeekersList[j] = AllJobSeekersList[j].strip('.txt')
+		j += 1
+
+Index_LoadAllJobSeekersIDs()
+
+
 def Index_LoadAllJobOffersIDs():
 	global AllJobsList
 	AllJobsList = os.listdir("./List Of Jobs/")
@@ -42,6 +57,15 @@ def Index_LoadAllJobOffersIDs():
 		j += 1
 
 Index_LoadAllJobOffersIDs()
+
+def GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekerid):
+	# Jobid is a string
+	JobSeekerfile = open('./List Of JobSeekers/%s.txt'% JobSeekerid, 'r')
+	x = JobSeekerfile.readline().strip('\n')
+	JobSeekerfile.close()
+	return x
+
+
 
 
 
@@ -75,25 +99,6 @@ def DeleteJob():
 	if x in AllJobsList:
 		os.remove('./List of Jobs/%s.txt' % x)
 		AllJobsList.remove(x)
-
-def BrowseJobOffers():
-	pass
-
-'''
-def FillFields(Filename):
-	x = open(Filename, 'r')
-	z = x.read().strip('\n')
-	y = z.split('>>>')
-	print(z)
-	CompanyInformationName.insert('1.0', y[1])
-	CompanyInformationAdress.insert('1.0', y[2])
-	CompanyInformationPhone.insert('1.0', y[3])
-	CompanyInformationEmail.insert('1.0', y[4])
-	Degree.insert('1.0', y[5])
-	Qualification.insert('1.0', y[6])
-	Experience.insert('1.0', y[7])
-	Mission.insert('1.0', y[8])'''
-
 
 
 def SearchJobOffer():
@@ -217,6 +222,27 @@ def Grid_BrowseAllJobSeekers_Show():
 	scrollbar.grid(row=1, column=3, sticky=S+N+E)
 	print("bzz")
 
+def ShowJobSeekersByJobs():
+	global JobSeekeresApplieToJob
+	JobSeekeresApplieToJob = []
+	for i in AllJobSeekersList:
+		currentfile = open('./List of JobSeekers/%s.txt'%i, 'r')
+		fileContent = currentfile.read()
+		currentfile.close()
+		x = fileContent.find('>>> ')
+		x = int(x)
+		Neededpart = str
+		counter2 = x
+		while counter2 > x+8:
+			Neededpart.join(fileContent[counter2])
+			counter2 = counter2 + 1
+		if Neededpart == (str(SearchByJob_TextField.get('1.0', 'end')).strip('\n')):
+			JobSeekeresApplieToJob.append(i)
+	AllJobSeekers_Textfield.delete('1.0', 'end')
+	AllJobSeekers_Textfield.insert('1.0', JobSeekeresApplieToJob)
+	Grid_BrowseAllJobSeekers_Show()
+
+
 
 
 
@@ -295,15 +321,17 @@ DeleteJobOfferButton = Button (Frame_BrowseAndUpdate, text="Delete", command=Del
 Frame_SearchJobSeekers = Frame(frame)
 SearchBy_Label = Label(Frame_SearchJobSeekers, text="Search by:")
 SearchAll_Button = Button(Frame_SearchJobSeekers, text="All", command=Grid_BrowseAllJobSeekers_Show)
-SearchByJobOfferAppliedTo_Button = Button(Frame_SearchJobSeekers,text="Search by job ID:")
+SearchByJobOfferAppliedTo_Button = Button(Frame_SearchJobSeekers,text="Search by job ID:", command=ShowJobSeekersByJobs)
 SearchByJob_TextField = Text(Frame_SearchJobSeekers, height=1, width=25)
 
 
 scrollbar = Scrollbar(frame)
 
 AllJobSeekers_Textfield = Text(frame, width=90, height=30, yscrollcommand=scrollbar.set)
-AllJobSeekers_Textfield.insert('1.0', "Job 1 \n", "line1", "line 2  ", "line2", "\nwhatever", "line3")
-AllJobSeekers_Textfield.tag_config("line1", foreground="blue")
+i = len(AllJobSeekersList)
+while i != 0:
+	AllJobSeekers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobSeekersList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobSeekersList[i-1])), 'tag %s'%AllJobSeekersList[i-1])
+	i = i - 1
 
 scrollbar.config(command=AllJobSeekers_Textfield.yview)
 
