@@ -39,6 +39,7 @@ def Index_LoadAllJobOffersIDs():
 		j += 1
 
 def clearAllfields():
+	AddJobOffer_JobID.delete('1.0', 'end')
 	CompanyInformationName.delete('1.0', 'end')
 	CompanyInformationAdress.delete('1.0', 'end')
 	CompanyInformationPhone.delete('1.0', 'end')
@@ -52,6 +53,7 @@ def clearAllfields():
 
 
 def Grid_AddJobOffer_Show():
+	clearAllfields()
 	scrollbar.grid_forget()
 	Frame_AddJobOffer.grid_forget()
 	UserID_Label.grid_forget()
@@ -83,12 +85,13 @@ def Grid_AddJobOffer_Show():
 
 def SearchJobOffer():
 	x = (AddJobOffer_JobID.get('1.0', 'end').strip('\n')).zfill(8)
+	j = x
 	if x in AllJobsList:
 		x = open('./List of Jobs/%s.txt' % x, 'r')
 		z = x.read().strip('\n')
 		y = z.split('\n>>>')
-		# print(y)
 		clearAllfields()
+		AddJobOffer_JobID.insert('1.0', j)
 		CompanyInformationName.insert('1.0', y[0])
 		CompanyInformationAdress.insert('1.0', y[1])
 		CompanyInformationPhone.insert('1.0', y[2])
@@ -106,19 +109,71 @@ def ShowUserInformation():
 	CurrentUSerId = CurrentUserFile.readline().split(']')[1]
 	x = CurrentUSerId.zfill(8)
 	CurrentUserFile.close()
-	x = open('./List of Jobs/%s.txt' % x, 'r')
+	x = open('./List of JobSeekers/%s.txt' % x, 'r')
 	z = x.read().strip('\n')
 	y = z.split('\n>>>')
 	print(y[0])
-	CompanyInformationName.insert('1.0', y[0])
-	CompanyInformationAdress.insert('1.0', y[1])
-	CompanyInformationPhone.insert('1.0', y[2])
-	CompanyInformationEmail.insert('1.0', y[3])
-	Degree.insert('1.0', y[4])
-	Qualification.insert('1.0', y[5])
-	Experience.insert('1.0', y[6])
-	Mission.insert('1.0', y[7])
+	AddJobOffer_JobID.insert('1.0', CurrentUSerId.zfill(8))
+	try:
+		CompanyInformationName.insert('1.0', y[0])
+		CompanyInformationAdress.insert('1.0', y[1])
+		CompanyInformationPhone.insert('1.0', y[2])
+		CompanyInformationEmail.insert('1.0', y[3])
+		Degree.insert('1.0', y[4])
+		Qualification.insert('1.0', y[5])
+		Experience.insert('1.0', y[6])
+		Mission.insert('1.0', y[7])
+	except IndexError:
+		pass
 
+
+def UpdateUserinfo():
+	CurrentUserFile = open("CurrentUserFile.txt", 'r')
+	CurrentUSerId = CurrentUserFile.readline().split(']')[1].zfill(8)
+	CurrentUserFile.close()
+	x = open('./List of JobSeekers/%s.txt' % CurrentUSerId, 'r')
+	i = 0
+	while i < 8:
+		x.readline()
+		i += 1
+	z1 = x.readline().strip('\n')
+	z2 = x.readline().strip('\n')
+	x.close()
+	x = open('./List of JobSeekers/%s.txt' % CurrentUSerId, 'w')
+	x.write(CompanyInformationName.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + CompanyInformationAdress.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + CompanyInformationPhone.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + CompanyInformationEmail.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + Degree.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + Qualification.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + Experience.get('1.0', 'end').strip('\n'))
+	x.write("\n>>>" + Mission.get('1.0', 'end').strip('\n'))
+	if not z1:
+		x.write('\n')
+	else:
+		x.write('\n' + z1)
+	x.write('\n' + z2)
+	x.close()
+
+def ApplyToJob():
+	CurrentUserFile = open("CurrentUserFile.txt", 'r')
+	CurrentUSerId = CurrentUserFile.readline().split(']')[1].zfill(8)
+	CurrentUserFile.close()
+	x = open('./List of JobSeekers/%s.txt' % CurrentUSerId, 'r')
+	i = 0
+	j = []
+	while i < 10:
+		j.append(x.readline())
+		i += 1
+	print(j)
+	x.close()
+	x = open('./List of JobSeekers/%s.txt' % CurrentUSerId, 'w')
+	i = 0
+	while i < 8:
+		x.write(j[i])
+		i += 1
+	x.write('>>> ' + (AddJobOffer_JobID.get('1.0', 'end').strip('\n')) + '\n' + j[9])
+	x.close()
 
 
 def Grid_BrowseAndUpdate_Show():
@@ -203,8 +258,8 @@ Mission_Label = Label(Frame_AddJobOffer, text="Mission:")
 Mission = Text(Frame_AddJobOffer, height=5, width=50)
 
 SearchButton2 = Button(Frame_AddJobOffer, text="Search", command=SearchJobOffer)
-ApplyForJob_Button = Button(Frame_AddJobOffer, text="Apply")
-updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update")
+ApplyForJob_Button = Button(Frame_AddJobOffer, text="Apply", command=ApplyToJob)
+updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update", command=UpdateUserinfo)
 
 
 scrollbar = Scrollbar(frame)
