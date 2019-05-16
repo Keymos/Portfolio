@@ -13,6 +13,7 @@ def file_len(fname):
 
 
 def Login():
+	CurrentUserFileIndex = []
 	CurrentUser = [TextField_Username.get("1.0", END).strip('\n'), TextField_Password.get("1.0", END).strip('\n')]
 	UsersDatabase = open('UsersDatabase.txt','r')
 	if TextField_Username.get("1.0", END).strip('\n') == 'admin':
@@ -21,9 +22,19 @@ def Login():
 		else:
 			print('Error')
 	elif CurrentUser in UserDataBaseList:
+		for i in os.listdir('List of JobSeekers'):
+			Tempor = open('List of JobSeekers/%s' % i, 'r')
+			j = 0
+			while j < 9:
+				Tempor.readline()
+				j += 1
+			if Tempor.readline() == ('>>> ' + CurrentUser[0] + ';;; ' + CurrentUser[1] ):
+				CurrentUserFileIndex.append(int(i.strip('.txt')))
+				print(CurrentUserFileIndex[0])
 		UsersDatabase.close()
 		CurrentUserFile = open('CurrentUserFile.txt', 'w+')
-		CurrentUserFile.write(str(CurrentUser))
+		jjj =  str(CurrentUserFileIndex[0])
+		CurrentUserFile.write(str(CurrentUser) + jjj)
 		CurrentUserFile.close()
 		subprocess.run(["Python", "UserPanel.py"])
 	else:
@@ -43,8 +54,13 @@ def Register():
 		UsersDatabase = open('UsersDatabase.txt','a+')
 		y = str('\n' + TextField_Username.get("1.0", END).strip('\n') + ';;; ' + TextField_Password.get("1.0", END).strip('\n'))
 		UsersDatabase.write(y)
-		UserDataBase.close()
-
+		UsersDatabase.close()
+		temp = (os.listdir("List of JobSeekers"))
+		tempo = int(str(temp[len(temp)-1]).strip(".txt"))+1
+		UsersDatabase = open('List of JobSeekers/%s.txt' % str(tempo).zfill(8),'w+')
+		i = 0
+		UsersDatabase.write(9*'\n')
+		UsersDatabase.write('>>> ' + CurrentUser[0] + ';;; ' + CurrentUser[1] )
 
 # Users' Informations retreival if the database is there, otherwise
 # create a new one.

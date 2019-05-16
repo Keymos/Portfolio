@@ -29,6 +29,27 @@ def ShowAllJObs():
 		AllJobOffers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobsList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobsList[i-1])), 'tag %s'%AllJobsList[i-1])
 		i = i - 1
 
+def Index_LoadAllJobOffersIDs():
+	global AllJobsList
+	AllJobsList = os.listdir("./List Of Jobs/")
+	print(len(AllJobsList))
+	j = 0
+	while j < len(AllJobsList):
+		AllJobsList[j] = AllJobsList[j].strip('.txt')
+		j += 1
+
+def clearAllfields():
+	CompanyInformationName.delete('1.0', 'end')
+	CompanyInformationAdress.delete('1.0', 'end')
+	CompanyInformationPhone.delete('1.0', 'end')
+	CompanyInformationEmail.delete('1.0', 'end')
+	Degree.delete('1.0', 'end')
+	Qualification.delete('1.0', 'end')
+	Experience.delete('1.0', 'end')
+	Mission.delete('1.0', 'end')
+
+
+
 
 def Grid_AddJobOffer_Show():
 	scrollbar.grid_forget()
@@ -60,6 +81,44 @@ def Grid_AddJobOffer_Show():
 	Mission_Label.grid(row=10, column=0)
 	Mission.grid(row=10, column=1, columnspan=3)
 
+def SearchJobOffer():
+	x = (AddJobOffer_JobID.get('1.0', 'end').strip('\n')).zfill(8)
+	if x in AllJobsList:
+		x = open('./List of Jobs/%s.txt' % x, 'r')
+		z = x.read().strip('\n')
+		y = z.split('\n>>>')
+		# print(y)
+		clearAllfields()
+		CompanyInformationName.insert('1.0', y[0])
+		CompanyInformationAdress.insert('1.0', y[1])
+		CompanyInformationPhone.insert('1.0', y[2])
+		CompanyInformationEmail.insert('1.0', y[3])
+		Degree.insert('1.0', y[4])
+		Qualification.insert('1.0', y[5])
+		Experience.insert('1.0', y[6])
+		Mission.insert('1.0', y[7])
+	else:
+		print('bzz')
+
+def ShowUserInformation():
+	CurrentUserFile = open("CurrentUserFile.txt", 'r')
+	CurrentUSerId = CurrentUserFile.readline().split(']')[1]
+	x = CurrentUSerId.zfill(8)
+	x = open('./List of Jobs/%s.txt' % x, 'r')
+	z = x.read().strip('\n')
+	y = z.split('\n>>>')
+	# print(y)
+	clearAllfields()
+	CompanyInformationName.insert('1.0', y[0])
+	CompanyInformationAdress.insert('1.0', y[1])
+	CompanyInformationPhone.insert('1.0', y[2])
+	CompanyInformationEmail.insert('1.0', y[3])
+	Degree.insert('1.0', y[4])
+	Qualification.insert('1.0', y[5])
+	Experience.insert('1.0', y[6])
+	Mission.insert('1.0', y[7])
+
+
 
 def Grid_BrowseAndUpdate_Show():
 	SearchButton2.grid_forget()
@@ -68,6 +127,8 @@ def Grid_BrowseAndUpdate_Show():
 	scrollbar.grid(row=1, column=2, sticky=S+N+E)
 
 def Grid_UpdateJobSekkerInformation_Show():
+	ShowUserInformation()
+	clearAllfields()
 	AllJobOffers_Textfield.grid_forget()
 	scrollbar.grid_forget()
 	updateUserInfo_Botton.grid(row=0, column=1, sticky=E)
@@ -140,7 +201,7 @@ Experience = Text(Frame_AddJobOffer, height=5, width=50)
 Mission_Label = Label(Frame_AddJobOffer, text="Mission:")
 Mission = Text(Frame_AddJobOffer, height=5, width=50)
 
-SearchButton2 = Button(Frame_AddJobOffer, text="Search")#, command=SearchJob)
+SearchButton2 = Button(Frame_AddJobOffer, text="Search", command=SearchJobOffer)
 ApplyForJob_Button = Button(Frame_AddJobOffer, text="Apply")
 updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update")
 
@@ -148,7 +209,12 @@ updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update")
 scrollbar = Scrollbar(frame)
 
 AllJobOffers_Textfield = Text(frame, width=66, height=30, yscrollcommand=scrollbar.set)
-
+i = len(os.listdir('List of Jobs'))-1
+while i != -1:
+	file = open('List of Jobs/%s' % os.listdir('List of Jobs')[i])
+	jobname = file.readline()
+	AllJobOffers_Textfield.insert('1.0', '%s ------ %s\n'%(str(os.listdir('List of Jobs')[i]).zfill(8).strip('.txt'), jobname))
+	i = i - 1
 scrollbar.config(command=AllJobOffers_Textfield.yview)
 
 
