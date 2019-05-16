@@ -101,14 +101,15 @@ def SearchJobOffer():
 		print('bzz')
 
 def ShowUserInformation():
+	clearAllfields()
 	CurrentUserFile = open("CurrentUserFile.txt", 'r')
 	CurrentUSerId = CurrentUserFile.readline().split(']')[1]
 	x = CurrentUSerId.zfill(8)
+	CurrentUserFile.close()
 	x = open('./List of Jobs/%s.txt' % x, 'r')
 	z = x.read().strip('\n')
 	y = z.split('\n>>>')
-	# print(y)
-	clearAllfields()
+	print(y[0])
 	CompanyInformationName.insert('1.0', y[0])
 	CompanyInformationAdress.insert('1.0', y[1])
 	CompanyInformationPhone.insert('1.0', y[2])
@@ -127,8 +128,8 @@ def Grid_BrowseAndUpdate_Show():
 	scrollbar.grid(row=1, column=2, sticky=S+N+E)
 
 def Grid_UpdateJobSekkerInformation_Show():
-	ShowUserInformation()
 	clearAllfields()
+	ShowUserInformation()
 	AllJobOffers_Textfield.grid_forget()
 	scrollbar.grid_forget()
 	updateUserInfo_Botton.grid(row=0, column=1, sticky=E)
