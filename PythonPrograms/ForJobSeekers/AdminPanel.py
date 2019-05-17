@@ -3,22 +3,6 @@ from tkinter import ttk
 import os
 
 
-'''
-What's left to be done:
-	The search all job seekers thing
-	Job seekers' back end.
-'''
-
-
-
-
-
-
-
-
-
-
-
 
 
 def clearAllfields():
