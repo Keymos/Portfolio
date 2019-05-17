@@ -30,6 +30,8 @@ def clearAllfields():
 	Qualification.delete('1.0', 'end')
 	Experience.delete('1.0', 'end')
 	Mission.delete('1.0', 'end')
+	AllJobSeekers_Textfield.delete('1.0', 'end')
+	SearchByJob_TextField.delete('1.0', 'end')
 
 
 
@@ -37,6 +39,7 @@ def clearAllfields():
 
 def Index_LoadAllJobSeekersIDs():
 	global AllJobSeekersList
+	AllJobSeekersList = []
 	AllJobSeekersList = os.listdir("./List Of JobSeekers/")
 	print(len(AllJobSeekersList))
 	j = 0
@@ -126,9 +129,11 @@ def SearchJobOffer():
 
 def ShowAllJobSeekers():
 	i = len(AllJobSeekersList)
+	AllJobSeekers_Textfield.delete('1.0', 'end')
 	while i != 0:
 		AllJobSeekers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobSeekersList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobSeekersList[i-1])), 'tag %s'%AllJobSeekersList[i-1])
 		i = i - 1
+	Grid_BrowseAllJobSeekers_Show()
 
 
 
@@ -219,15 +224,14 @@ def Grid_SearchJobSeekers_Show():
 	SearchByJob_TextField.grid(row=2, column=2)
 
 def Grid_BrowseAllJobSeekers_Show():
-	ShowAllJobSeekers()
 	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
 	scrollbar.grid(row=1, column=3, sticky=S+N+E)
 	print("bzz")
 
 def ShowJobSeekersByJobs():
+	AllJobSeekers_Textfield.delete('1.0', 'end')
 	JobSeekersAppliedToJob_List =[]
 	JobIDAppliedTo = SearchByJob_TextField.get('1.0', 'end').strip('\n').zfill(8)
-	print('jobappliedto' + JobIDAppliedTo)
 	for currentFile in os.listdir('List of JobSeekers'):
 		TempFile = open('List of JobSeekers/%s' % currentFile, 'r')
 		counter = 0
@@ -237,25 +241,12 @@ def ShowJobSeekersByJobs():
 		HajaHasilou = TempFile.readline().strip('>>> ')
 		print('JobIDAppliedTo' + JobIDAppliedTo)
 		if int(JobIDAppliedTo) == int(HajaHasilou):
-			print('bouf' + currentFile)
 			JobSeekersAppliedToJob_List.append(currentFile.strip('.txt'))
-		print(JobSeekersAppliedToJob_List)
 	i = len(JobSeekersAppliedToJob_List)
 	while i != 0:
-		AllJobSeekers_Textfield.insert('1.0', '%s'%(JobSeekersAppliedToJob_List[i-1]))
+		AllJobSeekers_Textfield.insert('1.0', '%s ------ %s\n'%(JobSeekersAppliedToJob_List[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekersAppliedToJob_List[i-1])))
 		i = i - 1
-
 	Grid_BrowseAllJobSeekers_Show()
-
-
-
-
-
-
-
-
-
-
 
 
 
