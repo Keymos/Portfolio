@@ -124,10 +124,11 @@ def SearchJobOffer():
 		print('bzz')
 
 
-
-
-
-
+def ShowAllJobSeekers():
+	i = len(AllJobSeekersList)
+	while i != 0:
+		AllJobSeekers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobSeekersList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobSeekersList[i-1])), 'tag %s'%AllJobSeekersList[i-1])
+		i = i - 1
 
 
 
@@ -218,29 +219,34 @@ def Grid_SearchJobSeekers_Show():
 	SearchByJob_TextField.grid(row=2, column=2)
 
 def Grid_BrowseAllJobSeekers_Show():
+	ShowAllJobSeekers()
 	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
 	scrollbar.grid(row=1, column=3, sticky=S+N+E)
 	print("bzz")
 
 def ShowJobSeekersByJobs():
-	global JobSeekeresApplieToJob
-	JobSeekeresApplieToJob = []
-	for i in AllJobSeekersList:
-		currentfile = open('./List of JobSeekers/%s.txt'%i, 'r')
-		fileContent = currentfile.read()
-		currentfile.close()
-		x = fileContent.find('>>> ')
-		x = int(x)
-		Neededpart = str
-		counter2 = x
-		while counter2 > x+8:
-			Neededpart.join(fileContent[counter2])
-			counter2 = counter2 + 1
-		if Neededpart == (str(SearchByJob_TextField.get('1.0', 'end')).strip('\n')):
-			JobSeekeresApplieToJob.append(i)
-	AllJobSeekers_Textfield.delete('1.0', 'end')
-	AllJobSeekers_Textfield.insert('1.0', JobSeekeresApplieToJob)
+	JobSeekersAppliedToJob_List =[]
+	JobIDAppliedTo = SearchByJob_TextField.get('1.0', 'end').strip('\n').zfill(8)
+	print('jobappliedto' + JobIDAppliedTo)
+	for currentFile in os.listdir('List of JobSeekers'):
+		TempFile = open('List of JobSeekers/%s' % currentFile, 'r')
+		counter = 0
+		while counter < 8:
+			TempFile.readline()
+			counter += 1
+		HajaHasilou = TempFile.readline().strip('>>> ')
+		print('JobIDAppliedTo' + JobIDAppliedTo)
+		if int(JobIDAppliedTo) == int(HajaHasilou):
+			print('bouf' + currentFile)
+			JobSeekersAppliedToJob_List.append(currentFile.strip('.txt'))
+		print(JobSeekersAppliedToJob_List)
+	i = len(JobSeekersAppliedToJob_List)
+	while i != 0:
+		AllJobSeekers_Textfield.insert('1.0', '%s'%(JobSeekersAppliedToJob_List[i-1]))
+		i = i - 1
+
 	Grid_BrowseAllJobSeekers_Show()
+
 
 
 
@@ -328,10 +334,7 @@ SearchByJob_TextField = Text(Frame_SearchJobSeekers, height=1, width=25)
 scrollbar = Scrollbar(frame)
 
 AllJobSeekers_Textfield = Text(frame, width=90, height=30, yscrollcommand=scrollbar.set)
-i = len(AllJobSeekersList)
-while i != 0:
-	AllJobSeekers_Textfield.insert('1.0', '%s ------ %s\n'%(AllJobSeekersList[i-1], GetJobNameFrom_Index_LoadAllJobOffersIDs(AllJobSeekersList[i-1])), 'tag %s'%AllJobSeekersList[i-1])
-	i = i - 1
+
 
 scrollbar.config(command=AllJobSeekers_Textfield.yview)
 
