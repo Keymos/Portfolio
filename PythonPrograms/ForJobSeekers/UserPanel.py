@@ -3,8 +3,13 @@ from tkinter import ttk
 import os
 
 
+# If you haven't read the AdminPanel.py, go read it now before this file.
+# A big part of the code is copied from there. The names aren't changed
+# because bokhl.
 
 def Index_LoadAllJobOffersIDs():
+	# loads all job offers from /List Of Jobs folder.
+	# saves them in AllJobsList list.
 	global AllJobsList
 	AllJobsList = os.listdir("./List Of Jobs/")
 	print(len(AllJobsList))
@@ -16,13 +21,14 @@ def Index_LoadAllJobOffersIDs():
 Index_LoadAllJobOffersIDs()
 
 def GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekerid):
-	# Jobid is a string
+	# Same but for /List Of Jobs folder.
 	JobSeekerfile = open('./List Of Jobs/%s.txt'% JobSeekerid, 'r')
 	x = JobSeekerfile.readline().strip('\n')
 	JobSeekerfile.close()
 	return x
 
 def ShowAllJObs():
+	# Fills the AllJobOffers_Textfield with the list of all the jobs
 	AllJobOffers_Textfield.delete('1.0', 'end')
 	i = len(AllJobsList)
 	while i != 0:
@@ -30,6 +36,7 @@ def ShowAllJObs():
 		i = i - 1
 
 def Index_LoadAllJobOffersIDs():
+	# Loads all job offers from the /List Of Jobs folder
 	global AllJobsList
 	AllJobsList = os.listdir("./List Of Jobs/")
 	print(len(AllJobsList))
@@ -39,6 +46,7 @@ def Index_LoadAllJobOffersIDs():
 		j += 1
 
 def clearAllfields():
+	# Clear all textfields.
 	AddJobOffer_JobID.delete('1.0', 'end')
 	CompanyInformationName.delete('1.0', 'end')
 	CompanyInformationAdress.delete('1.0', 'end')
@@ -84,6 +92,7 @@ def Grid_AddJobOffer_Show():
 	Mission.grid(row=10, column=1, columnspan=3)
 
 def SearchJobOffer():
+	# searches and displays the information of a Job
 	x = (AddJobOffer_JobID.get('1.0', 'end').strip('\n')).zfill(8)
 	j = x
 	if x in AllJobsList:
@@ -104,6 +113,7 @@ def SearchJobOffer():
 		print('bzz')
 
 def ShowUserInformation():
+	# Displays the information of the current user.
 	clearAllfields()
 	CurrentUserFile = open("CurrentUserFile.txt", 'r')
 	CurrentUSerId = CurrentUserFile.readline().split(']')[1]
@@ -128,6 +138,7 @@ def ShowUserInformation():
 
 
 def UpdateUserinfo():
+	# Updates the information of the current user.
 	CurrentUserFile = open("CurrentUserFile.txt", 'r')
 	CurrentUSerId = CurrentUserFile.readline().split(']')[1].zfill(8)
 	CurrentUserFile.close()
@@ -156,6 +167,7 @@ def UpdateUserinfo():
 	x.close()
 
 def ApplyToJob():
+	# Applies the user to the selected job.
 	CurrentUserFile = open("CurrentUserFile.txt", 'r')
 	CurrentUSerId = CurrentUserFile.readline().split(']')[1].zfill(8)
 	CurrentUserFile.close()
@@ -264,6 +276,8 @@ updateUserInfo_Botton = Button(Frame_AddJobOffer, text="Update", command=UpdateU
 
 scrollbar = Scrollbar(frame)
 
+# load the list of all job offers, since the user can't modify the list,
+# the program will never update it and thus it only needs to run list the jobs once.
 AllJobOffers_Textfield = Text(frame, width=66, height=30, yscrollcommand=scrollbar.set)
 i = len(os.listdir('List of Jobs'))-1
 while i != -1:
@@ -275,3 +289,5 @@ scrollbar.config(command=AllJobOffers_Textfield.yview)
 
 
 root.mainloop()
+
+# THE END

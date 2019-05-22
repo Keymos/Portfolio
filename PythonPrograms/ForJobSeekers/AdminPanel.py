@@ -6,6 +6,7 @@ import os
 
 
 def clearAllfields():
+	# Clears all Textfields
 	CompanyInformationName.delete('1.0', 'end')
 	CompanyInformationAdress.delete('1.0', 'end')
 	CompanyInformationPhone.delete('1.0', 'end')
@@ -22,6 +23,8 @@ def clearAllfields():
 
 
 def Index_LoadAllJobSeekersIDs():
+	# Lists the files in the /List Of JobSeekers folder.
+	# Name of files excluding the extension represent the ids of users.
 	global AllJobSeekersList
 	AllJobSeekersList = []
 	AllJobSeekersList = os.listdir("./List Of JobSeekers/")
@@ -35,6 +38,7 @@ Index_LoadAllJobSeekersIDs()
 
 
 def Index_LoadAllJobOffersIDs():
+	# Same as previous method but for the /List of Jobs folder.
 	global AllJobsList
 	AllJobsList = os.listdir("./List Of Jobs/")
 	print(len(AllJobsList))
@@ -47,6 +51,7 @@ Index_LoadAllJobOffersIDs()
 
 def GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekerid):
 	# Jobid is a string
+	# returns the name of the user from the userId
 	JobSeekerfile = open('./List Of JobSeekers/%s.txt'% JobSeekerid, 'r')
 	x = JobSeekerfile.readline().strip('\n')
 	JobSeekerfile.close()
@@ -59,6 +64,8 @@ def GetJobNameFrom_Index_LoadAllJobOffersIDs(JobSeekerid):
 
 global JobID
 def AddJob():
+	# Adds Job, no shit.
+	# With Job detail like adress and bla bla
 	try:
 		JobID = int(str(AddJobOffer_JobID.get('1.0', END)).strip('\n'))
 		JobID = str(JobID).zfill(8)
@@ -81,6 +88,7 @@ def AddJob():
 
 
 def DeleteJob():
+	# Deletes job...
 	x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
 	print(x)
 	if x in AllJobsList:
@@ -89,6 +97,8 @@ def DeleteJob():
 
 
 def SearchJobOffer():
+	# Finds the file of the job corresponding to the given id
+	# Fills the  Textfields with the corresponding infos. 
 	if (SearchJobID.get('1.0', 'end').strip('\n')) != '':
 		x = (SearchJobID.get('1.0', 'end').strip('\n')).zfill(8)
 	else:
@@ -97,7 +107,6 @@ def SearchJobOffer():
 		x = open('./List of Jobs/%s.txt' % x, 'r')
 		z = x.read().strip('\n')
 		y = z.split('\n>>>')
-		# print(y)
 		clearAllfields()
 		CompanyInformationName.insert('1.0', y[0])
 		CompanyInformationAdress.insert('1.0', y[1])
@@ -112,6 +121,7 @@ def SearchJobOffer():
 
 
 def ShowAllJobSeekers():
+	# hayya talla3 trah.
 	i = len(AllJobSeekersList)
 	AllJobSeekers_Textfield.delete('1.0', 'end')
 	while i != 0:
@@ -124,12 +134,14 @@ def ShowAllJobSeekers():
 
 
 
-
+# All methods starting with 'Grid_' are more related to the GUI
+# They show or hide the widgets: buttons, Labels, Textfields...
 
 
 
 
 def Grid_AddJobOffer_Show():
+	# Shows the 'Add job' "page".
 	clearAllfields()
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
@@ -161,6 +173,7 @@ def Grid_AddJobOffer_Show():
 	AddjobButton2.grid(row=0, column=1, sticky=E)
 
 def Grid_BrowseAndUpdate_Show():
+	# Shows the 'Browse And update' "page".
 	AddjobButton2.grid_forget()
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
@@ -174,6 +187,7 @@ def Grid_BrowseAndUpdate_Show():
 	SearchJob_SearchButton.grid(row=0, column=4)
 
 def SearchJob():
+	# Calls the SearchJobOffer method and some Graphical shit.
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
 	Grid_AddJobOffer_Show()
@@ -185,6 +199,7 @@ def SearchJob():
 
 
 def Grid_DeleteJobOffer_Show():
+	# Shows the 'Delete Job Offer' "page."
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
 	Frame_AddJobOffer.grid_forget()
@@ -196,6 +211,7 @@ def Grid_DeleteJobOffer_Show():
 	DeleteJobOfferButton.grid(row=0, column=4)
 
 def Grid_SearchJobSeekers_Show():
+	# Tasna3 saroukh.
 	scrollbar.grid_forget()
 	AllJobSeekers_Textfield.grid_forget()
 	DeleteJobOfferButton.grid_forget()
@@ -208,11 +224,15 @@ def Grid_SearchJobSeekers_Show():
 	SearchByJob_TextField.grid(row=2, column=2)
 
 def Grid_BrowseAllJobSeekers_Show():
+	# Display all jobSeekers
 	AllJobSeekers_Textfield.grid(row=1, column=0, columnspan=4, sticky=W)
 	scrollbar.grid(row=1, column=3, sticky=S+N+E)
 	print("bzz")
 
 def ShowJobSeekersByJobs():
+	# Reads the input from SearchByJob_TextField, finds the needed file corresponding
+	# to that user's id, displays the info by calling the Grid_BrowseAllJobSeekers_Show()
+	# method.
 	AllJobSeekers_Textfield.delete('1.0', 'end')
 	JobSeekersAppliedToJob_List =[]
 	JobIDAppliedTo = SearchByJob_TextField.get('1.0', 'end').strip('\n').zfill(8)
@@ -241,7 +261,7 @@ def ShowJobSeekersByJobs():
 
 
 
-
+# GUI : Graphical User Interface.
 
 root = Tk()
 root.title("Hire now !")
@@ -260,7 +280,6 @@ Button_BrowseListOfJobSeekers.grid(row=0, column=3)
 Emptyfield = Label(frame, height=32)
 Emptyfield.grid(row=1)
 
-# AddJobOffer
 Frame_AddJobOffer = Frame(frame)
 
 AddJobOffer_JobID_Label = Label(Frame_AddJobOffer, text="Job ID")
@@ -305,8 +324,9 @@ SearchAll_Button = Button(Frame_SearchJobSeekers, text="All", command=Grid_Brows
 SearchByJobOfferAppliedTo_Button = Button(Frame_SearchJobSeekers,text="Search by job ID:", command=ShowJobSeekersByJobs)
 SearchByJob_TextField = Text(Frame_SearchJobSeekers, height=1, width=25)
 
-
+# Scrollbar:
 scrollbar = Scrollbar(frame)
+# Sobhan allah.
 
 AllJobSeekers_Textfield = Text(frame, width=90, height=30, yscrollcommand=scrollbar.set)
 

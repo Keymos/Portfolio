@@ -13,6 +13,9 @@ def file_len(fname):
 
 
 def Login():
+	# If Username and password both are 'admin' > opens adminPanel.py
+	# Otherwise checks if the user is in the database, if so, remembers the current
+	# user in CurrentUSerFile.txt and opens UserPanel.py
 	CurrentUserFileIndex = []
 	CurrentUser = [TextField_Username.get("1.0", END).strip('\n'), TextField_Password.get("1.0", END).strip('\n')]
 	UsersDatabase = open('UsersDatabase.txt','r')
@@ -42,7 +45,8 @@ def Login():
 
 
 def Register():
-	# Checks if Username and Pass combination is unique before adding it to the database. 
+	# Checks if Username and Password combination is unique in the
+	# UserDatabase.txt file, if so, adds it to the database. 
 	CurrentUser = [TextField_Username.get("1.0", END).strip('\n'), TextField_Password.get("1.0", END).strip('\n')]
 	if CurrentUser in UserDataBaseList:
 		print('Error')
