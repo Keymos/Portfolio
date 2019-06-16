@@ -66,7 +66,7 @@ for z in List_Followings:
 
 CurrentInput = False
 while CurrentInput == False:
-    Input = input("would you like to unfollow them? (y/n)")
+    Input = input("would you like to unfollow some of them? (y/n): ")
     if Input == 'y' or Input == 'n':
         break
 
@@ -74,13 +74,20 @@ if Input == 'y':
     i = 0
     j = 0
     while j < len(Ungrats):
-        while i < len(List_Followings):
-            #print(i)
-            if Ungrats[j] in FullList_Followings[i]['username']:
-                Account.Unfollow(FullList_Followings[i]['pk'])
+        Input = ''
+       	CurrentInput = False
+        while CurrentInput == False:
+            Input = input("Unfollow %s? (y/n): " % Ungrats[j])
+            if Input == 'y' or Input == 'n':
                 break
-            else:
-                i = i +1
+        if Input == 'y':
+            while i < len(List_Followings):
+                # print(i)
+                if Ungrats[j] in FullList_Followings[i]['username']:
+                    Account.Unfollow(FullList_Followings[i]['pk'])
+                    break
+                else:
+                    i = i +1
         #print('-----%i' % j)
         j = j + 1
     print("Done.")
